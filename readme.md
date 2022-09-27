@@ -2,7 +2,7 @@ XR Privacy Framework
 =========
 # Who this framework is for?
 
-The XR Privacy Framework (XRPF) is for **app developers** to give their users control of their privacy while collecting additional insights from their applications. It is also for **tools developers** wanting to build a transparent privacy standard through the XR ecosystem.
+The XR Privacy Framework (or "XRPF") is for **App Developers** to give their participants control of their data and privacy while collecting additional insights from their applications. It is also for **Tool Developers** that want to build a transparent privacy standard through the XR ecosystem.
 
 # Contributions
 
@@ -17,9 +17,9 @@ The XR Privacy Framework (XRPF) is for **app developers** to give their users co
 
 # What is this framework?
 
-XRPF is not a privacy policy and is not legally binding - it is a framework to inform users about data the app is recording. A company should have a privacy policy to specify how data is collected and used in greater detail available in their application and/or website.
+XRPF is not a privacy policy and is not legally binding - it is a framework to inform participants about data the app is recording. An App Developer and Tools Developer should have a privacy policy to specify how data is collected and used in greater detail available in their application and/or website, and disclose any applicable subprocessors. 
 
-XRPF is an agreement between the app developer and the user about the types of data being recorded, falling into 5 categories:
+XRPF is an framework that defines consent between the App Developer and the participant about the types of data being recorded, falling into 5 categories:
 
 - Hardware Data
 - Spatial Data
@@ -27,14 +27,14 @@ XRPF is an agreement between the app developer and the user about the types of d
 - Biometric Data
 - Social Data
 
-What can the developer do with the data after recorded?
+What can the App Developer do with the data after recorded?
 
-- The developer is free to use the data as they see fit (for research, training, app optimization, app monetization, etc). This should be indicated in their company privacy policy.
+- The App Developer is free to use the data as they see fit (for research, training, app optimization, app monetization, etc). These uses should be indicated in their privacy policy.
 
-As XRPF is a specification beyond the scope of a single piece of software, implementations will change as technology changes. This spec will be updated with the following goals:
+As XRPF is a specification beyond the scope of a single piece of software, implementations will change as technology changes. This specification will be updated with the following goals:
 
-- Give users a reasonable understanding about the data they make available
-- Allow developers to gain additional value from the data their users have agreed to provide
+- Give participants a reasonable understanding about the data they make available
+- Allow developers to gain additional value from the data their participants have agreed to provide
 
 # Why do we need this?
 
@@ -46,13 +46,13 @@ Many data sources are outside the available permissions agreement popups on Andr
 - Spatial data - not asked for permission
 - Biometric data - not asked for permission (depends on the device)
 
-Additionally, we believe users should be able to have feature rich XR experiences (powered by these data sources) without compromising their privacy. Correct implementation of this privacy framework separates data used by the app to deliver these experiences and data available to the developer.
+Additionally, we believe participants should be able to have feature rich XR experiences (powered by these data sources) without compromising their privacy. Correct implementation of this privacy framework separates data used by the app to deliver these experiences and data available to the developer.
 
 # Implementing the Framework
 
 - See [Unity Implementation](https://github.com/CognitiveVR/xrprivacyframework-unity) and [Unreal Implementation](https://github.com/CognitiveVR/xrprivacyframework-unreal) for more concrete examples
-- The developer should provide non-technical descriptions of features for users
-- The developer should customize description biometric data sources (if used)
+- The developer should provide non-technical descriptions of features for participants
+- The developer should customize the description of biometric data sources (if used)
 - The developer should not disable app features if certain data sources are not selected, just the recording of that data
 - The developer should display the agreement before data is recorded
 - The developer should allow a user to change their agreement from a reasonably accessible menu option later
@@ -60,19 +60,19 @@ Additionally, we believe users should be able to have feature rich XR experience
 
 ## Allowances
 
-- This agreement may be waived if you receive informed consent by the user in another method, such as written consent in an academic study. Consider including a popup in XR informing your user that data is being recorded regardless
+- This agreement may be waived if you receive informed consent by the user in another method, such as written consent in an academic study or via an employment agreement in the case of learning and development. Consider including a popup in XR informing your user that data is being recorded regardless
 - Customize UI visuals and controls for your application
 - Remove data sources agreements for invalid options (eg, the Oculus Quest doesn’t include any biometric sensors, so this option doesn’t need to be displayed)
 - You may **require** the user to agree with the hardware data source to continue using your app. This should not include any personally identifying information
-- You may save the agreement for a user. This agreement does not need to be accepted each session
+- You may save the agreement for a participant - this agreement does not need to be accepted each session
 
 # Supporting the Framework
 
-When a user is presented with the agreement, their choice should set certain flags in the application. Recording data should respect the flags set by the user’s choices.
+When a participant is presented with the agreement, their choice should set certain flags in the application. Recording data should respect the flags set by the user’s choices.
 
-**Tools developers** (such as analytics, advertisement or machine learning companies) should build their SDKs to enable or disable collection of data respecting these flags.
+**Tools Developers** (such as analytics, advertisement or machine learning companies) should build their SDKs to enable or disable collection of data respecting these flags.
 
-**App developers** should ensure that the tools they are using correctly implement this standard.
+**App Developers** should ensure that the tools they are using correctly implement this standard.
 
 
 # Data Source Reference
