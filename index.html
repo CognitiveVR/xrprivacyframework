@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>XR Privacy Framework — Open-Source Consent Specification for VR, AR &amp; MR Data</title>
+  <meta name="description" content="The XR Privacy Framework (XRPF) is an open-source, MIT-licensed specification that gives participants in virtual reality, augmented reality, and mixed reality experiences transparent control over what data is recorded — covering hardware, spatial, location, social, and biometric data sources.">
+  <meta name="keywords" content="XR privacy, VR privacy, AR privacy, mixed reality privacy, XR data consent, XRPF, privacy framework, spatial data, biometric data, eye tracking privacy, VR data protection, XR consent specification, open source privacy, immersive technology privacy">
+  <meta name="author" content="Cognitive3D">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xrprivacyframework.org">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://xrprivacyframework.org">
+  <meta property="og:title" content="XR Privacy Framework — Open-Source Consent Specification for XR Data">
+  <meta property="og:description" content="An open-source, MIT-licensed consent specification that gives VR, AR, and MR participants control over their data and privacy. Defines five data source categories: hardware, spatial, location, social, and biometric.">
+  <meta property="og:image" content="https://xrprivacyframework.org/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="XR Privacy Framework">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://xrprivacyframework.org">
+  <meta name="twitter:title" content="XR Privacy Framework — Open-Source Consent Specification for XR Data">
+  <meta name="twitter:description" content="An open-source consent specification that gives VR, AR, and MR participants control over their data and privacy. MIT Licensed.">
+  <meta name="twitter:image" content="https://xrprivacyframework.org/assets/og-image.png">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "XR Privacy Framework",
+    "url": "https://xrprivacyframework.org",
+    "description": "An open-source, MIT-licensed consent specification that gives VR, AR, and MR participants control over what data is recorded in XR experiences.",
+    "inLanguage": "en",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "XR Privacy Framework",
+      "url": "https://xrprivacyframework.org"
+    },
+    "about": {
+      "@type": "TechArticle",
+      "name": "XR Privacy Framework Specification",
+      "description": "A consent specification defining five data source categories for XR applications: hardware data, spatial data, location data, social data, and biometric data.",
+      "license": "https://opensource.org/licenses/MIT",
+      "author": {
+        "@type": "Organization",
+        "name": "Cognitive3D",
+        "url": "https://cognitive3d.com"
+      },
+      "datePublished": "2022-01-01",
+      "dateModified": "2026-04-15"
+    },
+    "mainEntity": {
+      "@type": "SoftwareSourceCode",
+      "name": "XR Privacy Framework",
+      "codeRepository": "https://github.com/CognitiveVR/xrprivacyframework",
+      "license": "https://opensource.org/licenses/MIT",
+      "programmingLanguage": ["C#", "C++"],
+      "runtimePlatform": ["Unity", "Unreal Engine"],
+      "author": {
+        "@type": "Organization",
+        "name": "Cognitive3D",
+        "url": "https://cognitive3d.com"
+      }
+    }
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg: #0d0e1a;
+      --color-surface: #141527;
+      --color-surface-raised: #1a1c32;
+      --color-border: #2b2d4a;
+      --color-text: #e3e5f0;
+      --color-text-muted: #9196b4;
+      --color-text-dim: #6b70a0;
+      --color-accent: #8b5cf6;
+      --color-accent-soft: rgba(139, 92, 246, 0.12);
+      --color-accent-bright: #a78bfa;
+      --color-green: #34d399;
+      --color-amber: #f0b74a;
+      --color-red: #f07178;
+      --color-purple: #c792ea;
+      --color-cyan: #22d3ee;
+      --max-width: 860px;
+      --nav-height: 68px;
+    }
+
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-height) + 24px); }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 14, 26, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--color-border);
+      height: var(--nav-height);
+    }
+
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--color-text);
+    }
+
+    .nav-logo svg { height: 44px; width: auto; }
+    .nav-logo span { font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+
+    .nav-links a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--color-text); background: var(--color-accent-soft); }
+
+    .nav-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      transition: color 0.15s, border-color 0.15s;
+      margin-left: 8px;
+    }
+    .nav-github:hover { color: var(--color-text); border-color: var(--color-text-muted); }
+    .nav-github svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* ── Mobile nav toggle ── */
+    .nav-toggle { display: none; background: none; border: none; color: var(--color-text-muted); cursor: pointer; padding: 8px; }
+    .nav-toggle svg { width: 22px; height: 22px; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: var(--nav-height);
+        left: 0; right: 0;
+        background: var(--color-surface);
+        border-bottom: 1px solid var(--color-border);
+        padding: 16px 24px;
+        gap: 4px;
+      }
+      .nav-links.open a, .nav-links.open .nav-github { width: 100%; padding: 10px 12px; }
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 64px;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .hero-logo { margin-bottom: 32px; }
+    .hero-logo svg { height: 110px; width: auto; opacity: 0.95; }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--color-text-muted);
+      max-width: 600px;
+      margin: 0 auto 32px;
+      line-height: 1.65;
+    }
+
+    .hero-badges {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+    }
+    .badge-green { color: var(--color-green); border-color: rgba(62, 207, 142, 0.25); background: rgba(62, 207, 142, 0.06); }
+    .badge-accent { color: var(--color-accent); border-color: rgba(108, 138, 255, 0.25); background: var(--color-accent-soft); }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--color-accent), #6366f1);
+      color: #fff;
+    }
+    .btn-primary:hover { background: linear-gradient(135deg, #7c3aed, #8b5cf6); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--color-text-muted);
+      border: 1px solid var(--color-border);
+    }
+    .btn-outline:hover { color: var(--color-text); border-color: var(--color-text-muted); }
+
+    /* ── Main layout ── */
+    .layout {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: sticky;
+      top: calc(var(--nav-height) + 24px);
+      align-self: start;
+      max-height: calc(100vh - var(--nav-height) - 48px);
+      overflow-y: auto;
+    }
+
+    .sidebar-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-dim);
+      margin-bottom: 12px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 5px 12px;
+      font-size: 13px;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      line-height: 1.5;
+      margin-bottom: 2px;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      color: var(--color-text);
+      border-left-color: var(--color-accent);
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; gap: 0; }
+      .sidebar { display: none; }
+    }
+
+    /* ── Content ── */
+    .content { min-width: 0; }
+
+    .content section {
+      margin-bottom: 56px;
+      scroll-margin-top: calc(var(--nav-height) + 32px);
+    }
+
+    .content h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .content h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      color: var(--color-text);
+    }
+
+    .content p {
+      margin-bottom: 14px;
+      color: var(--color-text-muted);
+    }
+
+    .content ul, .content ol {
+      margin: 0 0 16px 20px;
+      color: var(--color-text-muted);
+    }
+    .content li { margin-bottom: 6px; }
+    .content li strong { color: var(--color-text); }
+
+    .content a {
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+    .content a:hover { text-decoration: underline; }
+
+    /* ── Data source cards ── */
+    .data-source-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .data-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+    .data-card:hover { border-color: var(--color-accent); }
+
+    .data-card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .data-card h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .data-card p {
+      font-size: 13.5px;
+      color: var(--color-text-dim);
+      margin-bottom: 0;
+      line-height: 1.55;
+    }
+
+    .icon-hardware .data-card-icon { background: rgba(139, 92, 246, 0.15); }
+    .icon-spatial .data-card-icon { background: rgba(52, 211, 153, 0.12); }
+    .icon-location .data-card-icon { background: rgba(240, 183, 74, 0.12); }
+    .icon-social .data-card-icon { background: rgba(167, 139, 250, 0.15); }
+    .icon-biometric .data-card-icon { background: rgba(240, 113, 120, 0.12); }
+
+    /* ── Spec detail blocks ── */
+    .spec-block {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .spec-block h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spec-block ul {
+      margin: 0 0 0 18px;
+      font-size: 14px;
+    }
+
+    .restriction {
+      color: var(--color-red);
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Callout box ── */
+    .callout {
+      background: var(--color-surface);
+      border-left: 3px solid var(--color-accent);
+      border-radius: 0 8px 8px 0;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+    }
+    .callout p { margin-bottom: 0; font-size: 14.5px; }
+
+    /* ── Implementation screenshot ── */
+    .impl-showcase {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      margin: 24px 0;
+    }
+
+    .impl-screenshot {
+      flex-shrink: 0;
+      width: 240px;
+      border-radius: 12px;
+      border: 1px solid var(--color-border);
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .impl-screenshot img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .impl-details { flex: 1; min-width: 0; }
+
+    @media (max-width: 600px) {
+      .impl-showcase { flex-direction: column; }
+      .impl-screenshot { width: 100%; max-width: 300px; }
+    }
+
+    /* ── Adopter section ── */
+    .adopter-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .adopter-logo {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .adopter-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .adopter-info h4 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .adopter-info p { font-size: 14px; color: var(--color-text-muted); margin-bottom: 0; }
+
+    @media (max-width: 600px) {
+      .adopter-card { flex-direction: column; gap: 16px; }
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--color-border);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--color-text-dim);
+    }
+    footer a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+    }
+    footer a:hover { color: var(--color-text); }
+
+    /* ── Divider ── */
+    hr {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      margin: 48px 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════ Navigation ════════════ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <svg viewBox="601 712 540 553" xmlns="http://www.w3.org/2000/svg"><style>.ns{fill:#fff}</style><path class="ns" d="M1130,832.6c-0.6-11.8-1.5-19.9-1.5-19.9c-0.2-1.8-1.2-3.6-2.6-4.6c-32.9-25-77.3-45.9-121.8-57.5c-5.8-1.5-10.5,4.8-7.5,9.9c26.8,45.3,31.2,94.4,12.4,138.1c-5.5,12.7-12.8,24.6-21.8,35.6c-1.5-7.1-3.7-14.1-6.6-20.9c-0.7-1.7-1.4-3.3-2.2-4.9c13.5-22.3,19.6-46.5,18.2-72.6c-1.5-29-12.5-60.3-32.6-93.3c-0.8-1.3-1.9-2.2-3.3-2.8c-119.4-45.6-256.5,5.5-345,68.5c-1.5,1-2.5,2.7-2.8,4.6c-2.2,17.3-2.7,36-1.7,55.1c1.4,26.3,5.7,53.5,12.8,79.1c1.6,5.7,9.4,6.7,12.3,1.5c25.9-45.9,66.1-74.2,113.4-79.7c14.5-1.7,29.3-1.2,44.1,1.5c-2,1.7-3.9,3.5-5.8,5.4c-4.7,4.7-8.9,9.7-12.7,15c-55.9-1.7-103,30.5-138.3,95.2c-0.7,1.3-1,2.8-0.7,4.3c20.2,126.2,133,219.4,231.8,264.5c0,0,0.1,0,0.1,0c1.8,0.8,3.8,0.7,5.3,0.1c38.1-16,78.5-44,110.7-76.7c4.2-4.3,1.1-11.5-4.9-11.4c-52.7,0.6-97.3-20.2-125.8-58.3c-8.3-11.2-15-23.6-20.1-37c8.8,3,17.9,4.9,27.2,5.8c26.8,48,77.8,72,150.5,70.2c1.5,0,2.9-0.6,4.1-1.5C1132.2,1051,1132.7,882.1,1130,832.6z M1021.4,904c18.6-43.2,16.6-91-5.5-136c35.6,11,71.1,28.4,98.3,48.1c-1.1,9.9-5.2,35.4-18.7,64.3c-10.1,21.8-23.5,41.1-39.8,57.6c-18.9,19.2-41.9,34.3-68.2,45.3c1.6-7.8,2.4-15.7,2.4-23.8c0-2.5-0.1-5-0.2-7.6C1003.2,937.4,1013.9,921.4,1021.4,904z M659,796.3c83.6-48.9,195.7-81.5,294.7-44.7c18.2,30.3,28.1,58.9,29.5,85c1.1,20.6-3.1,40-12.5,58.1c-4.4-6.8-9.6-13.1-15.4-18.9c-10.9-10.9-23.5-19.4-37.6-25.3c-14.6-6.2-30.1-9.3-46-9.3c-6.2,0-12.4,0.5-18.5,1.4c0,0-6.8,1.4-12,2.7c-24.1-18.9-50.4-32.1-78.2-39.2c-23-5.9-47.1-7.8-71.6-5.5c-29.4,2.7-52,10.6-63.2,15.2c9.6-6.6,19.5-12.9,29.7-18.7L659,796.3z M748.1,855.6c-46.7,5.5-87.1,31.1-115.1,72.7c-8-34.9-10.7-73.1-7.8-105.7c7.6-3.5,32.8-13.9,66.9-17c23.9-2.2,47.3-0.3,69.7,5.5c25.9,6.7,50.5,18.8,73.1,35.9c-3.1,1-6.2,2.2-9.3,3.5c-6.2,2.6-12,5.7-17.6,9.3C787.9,854.7,767.8,853.3,748.1,855.6z M836.1,1223.3c-84.2-47.9-168.4-128.8-186.1-232.9c31-55.9,70.2-84.8,117.1-86.3c-1.6,3-3.1,6.1-4.4,9.2c-6.2,14.6-9.3,30.1-9.3,46c0,16,3.1,31.5,9.3,46c4.2,9.9,9.7,19.1,16.3,27.5c2.4,3.3,5.3,6.4,7.6,8.8c-4.5,31.3-2.7,61.6,5.5,90.1c6.6,22.8,17.2,44.5,31.5,64.5c12.4,17.2,25.3,30.1,35.2,38.7C851.1,1231.4,843.5,1227.5,836.1,1223.3L836.1,1223.3z M842.9,1116.4c28.1,37.7,70.5,59.8,120.5,63.3c-27.3,25.3-59.1,46.7-89.7,60.4c-8.8-6.5-28.1-22.3-45.9-47.1c-14-19.5-24.3-40.6-30.7-62.8c-7.6-26.6-9.6-54.9-5.8-84.1c7.8,7.2,16.4,13.3,25.7,18.2C822.8,1083.5,831.4,1101,842.9,1116.4z M868.9,1063.9c-5.2-0.1-10.3-0.6-15.3-1.5c-8.8-1.5-17.4-4.2-25.4-7.9c-5.5-2.5-10.8-5.5-15.8-9c-5.2-3.6-10.1-7.6-14.6-12.2c-1.5-1.5-3-3.1-4.4-4.7c-4-4.5-7.6-9.4-10.7-14.4c-10.1-16.3-15.5-35.1-15.5-54.8c0-19.7,5.4-38.5,15.5-54.8c2.7-4.3,5.7-8.5,9-12.4c1.9-2.3,4-4.5,6.1-6.7c4.1-4.1,8.5-7.8,13.2-11.2c4.9-3.5,10-6.6,15.4-9.1c7.3-3.5,15.1-6.2,23-7.9c5.9-1.3,11.9-2,18-2.3c1.4-0.1,2.9-0.1,4.3-0.1c27.9,0,54.2,10.9,73.9,30.6c6.8,6.8,12.5,14.3,17.1,22.5c2.5,4.5,4.7,9.1,6.6,13.9c3.1,8.1,5.2,16.7,6.2,25.5c0.5,4,0.7,8,0.7,12.1c0,1.9-0.1,3.8-0.2,5.7c-0.5,8.5-1.9,16.8-4.4,24.8c-1.8,5.8-4,11.4-6.8,16.8c-4.9,9.7-11.4,18.7-19.3,26.6c-19.7,19.7-46,30.6-73.9,30.6C870.8,1063.9,869.8,1063.9,868.9,1063.9z M1008.7,1134c-62.9,1.1-107.1-17.9-132.1-56.5c14.2-0.6,28-3.7,41.1-9.2c14.1-6,26.7-14.5,37.6-25.3c10.9-10.9,19.4-23.5,25.3-37.6c0.7-1.6,1.3-3.3,1.9-4.9c1-2.6,2.4-7.3,3.4-11c28.5-11.3,53.2-27.4,73.5-47.9c16.7-16.9,30.4-36.7,40.8-59c9-19.3,13.9-36.9,16.5-49.7c0.3,4.8,0.4,9.7,0.5,14.5l0,9.3C1117.3,921.1,1104.8,1054.5,1008.7,1134z"/><path class="ns" d="M906.2,924.2c-4.6-4.6-9.9-8.2-15.8-10.7c-6.1-2.6-12.7-3.9-19.4-3.9c-6.7,0-13.2,1.3-19.4,3.9c-5.9,2.5-11.3,6.1-15.8,10.7c-4.6,4.6-8.2,9.9-10.7,15.8c-2.6,6.1-3.9,12.7-3.9,19.4c0,6.7,1.3,13.2,3.9,19.4c2.5,5.9,6.1,11.3,10.7,15.8c4.6,4.6,9.9,8.2,15.8,10.7c6.1,2.6,12.7,3.9,19.4,3.9c6.7,0,13.2-1.3,19.4-3.9c5.9-2.5,11.3-6.1,15.8-10.7c4.6-4.6,8.2-9.9,10.7-15.8c2.6-6.1,3.9-12.7,3.9-19.4c0-6.7-1.3-13.2-3.9-19.4C914.4,934.1,910.8,928.8,906.2,924.2z"/></svg>
+      <span>XRPF</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#overview">Overview</a>
+      <a href="#why">Why</a>
+      <a href="#data-sources">Data Sources</a>
+      <a href="#implementation">Implementation</a>
+      <a href="#adopters">Adopters</a>
+      <a href="#contribute">Contribute</a>
+      <a class="nav-github" href="https://github.com/CognitiveVR/xrprivacyframework" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ════════════ Hero ════════════ -->
+<header class="hero">
+  <div class="hero-logo">
+    <svg viewBox="601 712 1797 553" xmlns="http://www.w3.org/2000/svg"><style>.hl{fill:#fff}</style><g><path class="hl" d="M1257,831.7l93.6,158.4l95.1-158.4h31.7L1369.4,1012l105.5,182.2h-31.7l-92.6-157.4l-92.1,157.4h-31.7l105.5-182.2l-106.9-180.2H1257z"/><path class="hl" d="M1543.1,831.7h148.5c44.1,0,84.7,21.3,84.7,105.5c0,94.1-47,102.5-68.3,104l77.7,153H1755l-77.2-152c-8.9-0.5-105.5-5.9-106.4-6.4v158.4h-28.2V831.7z M1691.7,1012c28.2,0,55.9-4,55.9-74.8c0-68.8-28.7-76.7-55.9-76.7h-120.3V1012H1691.7z"/><path class="hl" d="M1853.1,831.7h145.1c39.1,0,86.6,14.4,86.6,103c0,102.5-50,107.9-86.6,107.9c-19.8,0-114.4-6.9-116.8-8.4v159.9h-28.2V831.7z M1998.1,1013.9c30.2,0,58.4-8.9,57.9-79.2c-0.5-68.8-33.7-74.3-57.9-74.3h-116.8v153.5H1998.1z"/><path class="hl" d="M2172.4,896.1c0-48.5,29.7-65.8,62.4-64.4l153,6.9V860h-153c-27.7,0-34.2,14.9-34.2,36.1v103.5l167.3,4v21.8l-167.3,4v164.9h-28.2V896.1z"/></g><g><path class="hl" d="M1130,832.6c-0.6-11.8-1.5-19.9-1.5-19.9c-0.2-1.8-1.2-3.6-2.6-4.6c-32.9-25-77.3-45.9-121.8-57.5c-5.8-1.5-10.5,4.8-7.5,9.9c26.8,45.3,31.2,94.4,12.4,138.1c-5.5,12.7-12.8,24.6-21.8,35.6c-1.5-7.1-3.7-14.1-6.6-20.9c-0.7-1.7-1.4-3.3-2.2-4.9c13.5-22.3,19.6-46.5,18.2-72.6c-1.5-29-12.5-60.3-32.6-93.3c-0.8-1.3-1.9-2.2-3.3-2.8c-119.4-45.6-256.5,5.5-345,68.5c-1.5,1-2.5,2.7-2.8,4.6c-2.2,17.3-2.7,36-1.7,55.1c1.4,26.3,5.7,53.5,12.8,79.1c1.6,5.7,9.4,6.7,12.3,1.5c25.9-45.9,66.1-74.2,113.4-79.7c14.5-1.7,29.3-1.2,44.1,1.5c-2,1.7-3.9,3.5-5.8,5.4c-4.7,4.7-8.9,9.7-12.7,15c-55.9-1.7-103,30.5-138.3,95.2c-0.7,1.3-1,2.8-0.7,4.3c20.2,126.2,133,219.4,231.8,264.5c0,0,0.1,0,0.1,0c1.8,0.8,3.8,0.7,5.3,0.1c38.1-16,78.5-44,110.7-76.7c4.2-4.3,1.1-11.5-4.9-11.4c-52.7,0.6-97.3-20.2-125.8-58.3c-8.3-11.2-15-23.6-20.1-37c8.8,3,17.9,4.9,27.2,5.8c26.8,48,77.8,72,150.5,70.2c1.5,0,2.9-0.6,4.1-1.5C1132.2,1051,1132.7,882.1,1130,832.6z M1021.4,904c18.6-43.2,16.6-91-5.5-136c35.6,11,71.1,28.4,98.3,48.1c-1.1,9.9-5.2,35.4-18.7,64.3c-10.1,21.8-23.5,41.1-39.8,57.6c-18.9,19.2-41.9,34.3-68.2,45.3c1.6-7.8,2.4-15.7,2.4-23.8c0-2.5-0.1-5-0.2-7.6C1003.2,937.4,1013.9,921.4,1021.4,904z M659,796.3c83.6-48.9,195.7-81.5,294.7-44.7c18.2,30.3,28.1,58.9,29.5,85c1.1,20.6-3.1,40-12.5,58.1c-4.4-6.8-9.6-13.1-15.4-18.9c-10.9-10.9-23.5-19.4-37.6-25.3c-14.6-6.2-30.1-9.3-46-9.3c-6.2,0-12.4,0.5-18.5,1.4c0,0-6.8,1.4-12,2.7c-24.1-18.9-50.4-32.1-78.2-39.2c-23-5.9-47.1-7.8-71.6-5.5c-29.4,2.7-52,10.6-63.2,15.2c9.6-6.6,19.5-12.9,29.7-18.7L659,796.3z M748.1,855.6c-46.7,5.5-87.1,31.1-115.1,72.7c-8-34.9-10.7-73.1-7.8-105.7c7.6-3.5,32.8-13.9,66.9-17c23.9-2.2,47.3-0.3,69.7,5.5c25.9,6.7,50.5,18.8,73.1,35.9c-3.1,1-6.2,2.2-9.3,3.5c-6.2,2.6-12,5.7-17.6,9.3C787.9,854.7,767.8,853.3,748.1,855.6z M836.1,1223.3c-84.2-47.9-168.4-128.8-186.1-232.9c31-55.9,70.2-84.8,117.1-86.3c-1.6,3-3.1,6.1-4.4,9.2c-6.2,14.6-9.3,30.1-9.3,46c0,16,3.1,31.5,9.3,46c4.2,9.9,9.7,19.1,16.3,27.5c2.4,3.3,5.3,6.4,7.6,8.8c-4.5,31.3-2.7,61.6,5.5,90.1c6.6,22.8,17.2,44.5,31.5,64.5c12.4,17.2,25.3,30.1,35.2,38.7C851.1,1231.4,843.5,1227.5,836.1,1223.3L836.1,1223.3z M842.9,1116.4c28.1,37.7,70.5,59.8,120.5,63.3c-27.3,25.3-59.1,46.7-89.7,60.4c-8.8-6.5-28.1-22.3-45.9-47.1c-14-19.5-24.3-40.6-30.7-62.8c-7.6-26.6-9.6-54.9-5.8-84.1c7.8,7.2,16.4,13.3,25.7,18.2C822.8,1083.5,831.4,1101,842.9,1116.4z M868.9,1063.9c-5.2-0.1-10.3-0.6-15.3-1.5c-8.8-1.5-17.4-4.2-25.4-7.9c-5.5-2.5-10.8-5.5-15.8-9c-5.2-3.6-10.1-7.6-14.6-12.2c-1.5-1.5-3-3.1-4.4-4.7c-4-4.5-7.6-9.4-10.7-14.4c-10.1-16.3-15.5-35.1-15.5-54.8c0-19.7,5.4-38.5,15.5-54.8c2.7-4.3,5.7-8.5,9-12.4c1.9-2.3,4-4.5,6.1-6.7c4.1-4.1,8.5-7.8,13.2-11.2c4.9-3.5,10-6.6,15.4-9.1c7.3-3.5,15.1-6.2,23-7.9c5.9-1.3,11.9-2,18-2.3c1.4-0.1,2.9-0.1,4.3-0.1c27.9,0,54.2,10.9,73.9,30.6c6.8,6.8,12.5,14.3,17.1,22.5c2.5,4.5,4.7,9.1,6.6,13.9c3.1,8.1,5.2,16.7,6.2,25.5c0.5,4,0.7,8,0.7,12.1c0,1.9-0.1,3.8-0.2,5.7c-0.5,8.5-1.9,16.8-4.4,24.8c-1.8,5.8-4,11.4-6.8,16.8c-4.9,9.7-11.4,18.7-19.3,26.6c-19.7,19.7-46,30.6-73.9,30.6C870.8,1063.9,869.8,1063.9,868.9,1063.9z M1008.7,1134c-62.9,1.1-107.1-17.9-132.1-56.5c14.2-0.6,28-3.7,41.1-9.2c14.1-6,26.7-14.5,37.6-25.3c10.9-10.9,19.4-23.5,25.3-37.6c0.7-1.6,1.3-3.3,1.9-4.9c1-2.6,2.4-7.3,3.4-11c28.5-11.3,53.2-27.4,73.5-47.9c16.7-16.9,30.4-36.7,40.8-59c9-19.3,13.9-36.9,16.5-49.7c0.3,4.8,0.4,9.7,0.5,14.5l0,9.3C1117.3,921.1,1104.8,1054.5,1008.7,1134z"/><path class="hl" d="M906.2,924.2c-4.6-4.6-9.9-8.2-15.8-10.7c-6.1-2.6-12.7-3.9-19.4-3.9c-6.7,0-13.2,1.3-19.4,3.9c-5.9,2.5-11.3,6.1-15.8,10.7c-4.6,4.6-8.2,9.9-10.7,15.8c-2.6,6.1-3.9,12.7-3.9,19.4c0,6.7,1.3,13.2,3.9,19.4c2.5,5.9,6.1,11.3,10.7,15.8c4.6,4.6,9.9,8.2,15.8,10.7c6.1,2.6,12.7,3.9,19.4,3.9c6.7,0,13.2-1.3,19.4-3.9c5.9-2.5,11.3-6.1,15.8-10.7c4.6-4.6,8.2-9.9,10.7-15.8c2.6-6.1,3.9-12.7,3.9-19.4c0-6.7-1.3-13.2-3.9-19.4C914.4,934.1,910.8,928.8,906.2,924.2z"/></g></svg>
+  </div>
+  <h1>XR Privacy Framework</h1>
+  <p>An open-source consent specification that gives XR participants control over their data and privacy.</p>
+  <div class="hero-badges">
+    <span class="badge badge-green">MIT License</span>
+    <span class="badge badge-accent">Open Standard</span>
+    <span class="badge">v1.0</span>
+  </div>
+  <div class="hero-cta">
+    <a href="#data-sources" class="btn btn-primary">Read the Spec</a>
+    <a href="https://github.com/CognitiveVR/xrprivacyframework" class="btn btn-outline" target="_blank" rel="noopener">View on GitHub</a>
+  </div>
+</header>
+
+<!-- ════════════ Layout: sidebar + content ════════════ -->
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-label">On this page</div>
+    <a href="#overview">Overview</a>
+    <a href="#why">Why XRPF?</a>
+    <a href="#concepts">Concepts</a>
+    <a href="#data-sources">Data Sources</a>
+    <a href="#hardware-data">Hardware Data</a>
+    <a href="#spatial-data">Spatial Data</a>
+    <a href="#location-data">Location Data</a>
+    <a href="#social-data">Social Data</a>
+    <a href="#biometric-data">Biometric Data</a>
+    <a href="#implementation">Implementation</a>
+    <a href="#allowances">Allowances</a>
+    <a href="#supporting">Supporting XRPF</a>
+    <a href="#adopters">Adopters</a>
+    <a href="#contribute">Contribute</a>
+    <a href="#license">License</a>
+  </aside>
+
+  <!-- Content -->
+  <main class="content">
+
+    <!-- Overview -->
+    <section id="overview">
+      <h2>Overview</h2>
+      <p>The XR Privacy Framework (XRPF) is for <strong>App Developers</strong> to give their participants control of their data and privacy while collecting additional insights from their applications. It is also for <strong>Tool Developers</strong> that want to build a transparent privacy standard through the XR ecosystem.</p>
+      <div class="callout">
+        <p>XRPF is <strong>not</strong> a privacy policy and is not legally binding. It is a specification for informed consent about the types of data an XR app records. App Developers and Tool Developers should maintain separate privacy policies that specify how data is collected and used, and disclose any applicable subprocessors.</p>
+      </div>
+      <p>XRPF defines consent between the App Developer and the participant about data being recorded, organized into five categories: Hardware Data, Spatial Data, Location Data, Social Data, and Biometric Data.</p>
+      <p>What can an App Developer do with data after it is recorded? The developer is free to use data as they see fit&mdash;for research, training, app optimization, monetization, and so on. These uses should be indicated in their privacy policy.</p>
+      <p>As XRPF is a specification beyond the scope of a single piece of software, implementations will evolve as technology changes. This specification will be updated with the following goals:</p>
+      <ul>
+        <li>Give participants a reasonable understanding about the data they make available</li>
+        <li>Allow developers to gain additional value from the data their participants have agreed to provide</li>
+      </ul>
+    </section>
+
+    <!-- Why -->
+    <section id="why">
+      <h2>Why XRPF?</h2>
+      <p>Many data sources in XR are outside the scope of standard permission popups available on Android devices or PCs. These sources can be important for building immersive experiences:</p>
+      <ul>
+        <li><strong>Location Data</strong> &mdash; apps already ask for permission</li>
+        <li><strong>Social Data</strong> &mdash; apps already ask for permission</li>
+        <li><strong>Hardware Data</strong> &mdash; not asked for permission</li>
+        <li><strong>Spatial Data</strong> &mdash; not asked for permission</li>
+        <li><strong>Biometric Data</strong> &mdash; not asked for permission (depends on device)</li>
+      </ul>
+      <p>Participants should be able to have feature-rich XR experiences&mdash;powered by these data sources&mdash;without compromising their privacy. Correct implementation of XRPF separates data used by the app to deliver experiences from data available to the developer for analysis.</p>
+    </section>
+
+    <!-- Concepts -->
+    <section id="concepts">
+      <h2>Concepts &amp; Terminology</h2>
+      <p><strong>XR</strong> &mdash; any augmented reality, virtual reality, or mixed reality experience.</p>
+      <p><strong>Data Sources</strong> &mdash; a grouping of data that is reasonably connected to provide a high-level agreement about what the user finds acceptable to collect. This may refer to a technical grouping (e.g., GPU, CPU, and OS are all device-specific elements) or a conceptual grouping (e.g., fixations and heart rate are not directly related, but the source is the user's body).</p>
+    </section>
+
+    <!-- Data Sources -->
+    <section id="data-sources">
+      <h2>Data Sources</h2>
+      <p>XRPF organizes potentially sensitive data into five categories. Each describes the types of data available to the app that should be disclosed to the user when collected, along with restrictions on data that should never be recorded.</p>
+
+      <div class="data-source-grid">
+        <a href="#hardware-data" class="data-card icon-hardware" style="text-decoration:none;color:inherit;">
+          <div class="data-card-icon">&#9881;</div>
+          <h4>Hardware Data</h4>
+          <p>Device info, performance metrics, CPU/GPU, OS, battery, and framerate.</p>
+        </a>
+        <a href="#spatial-data" class="data-card icon-spatial" style="text-decoration:none;color:inherit;">
+          <div class="data-card-icon">&#9633;</div>
+          <h4>Spatial Data</h4>
+          <p>HMD &amp; controller position, room size, gaze direction, and surface detection.</p>
+        </a>
+        <a href="#location-data" class="data-card icon-location" style="text-decoration:none;color:inherit;">
+          <div class="data-card-icon">&#9679;</div>
+          <h4>Location Data</h4>
+          <p>Latitude, longitude, elevation, and compass direction for outdoor AR.</p>
+        </a>
+        <a href="#social-data" class="data-card icon-social" style="text-decoration:none;color:inherit;">
+          <div class="data-card-icon">&#9673;</div>
+          <h4>Social Data</h4>
+          <p>Non-identifiable multiplayer and social engagement metadata.</p>
+        </a>
+        <a href="#biometric-data" class="data-card icon-biometric" style="text-decoration:none;color:inherit;">
+          <div class="data-card-icon">&#9829;</div>
+          <h4>Biometric Data</h4>
+          <p>Eye tracking, heart rate, cognitive load, EEG, EMG, ECG, and GSR.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Hardware Data -->
+    <section id="hardware-data">
+      <div class="spec-block">
+        <h4>&#9881; Hardware Data</h4>
+        <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:12px;">Covers any hardware used for the experience.</p>
+        <p class="restriction">Never record: individual hardware serial numbers, MAC addresses, or images from pass-through cameras.</p>
+        <ul>
+          <li>Device ID implementation &mdash; combination of serial numbers to track device over multiple sessions</li>
+          <li>IP address (may identify country and city)</li>
+          <li>Friendly name of HMD (e.g., Pico Neo 3 Eye)</li>
+          <li>CPU manufacturer and type (e.g., Intel i7-1200)</li>
+          <li>GPU manufacturer and type (e.g., NVIDIA RTX 2060)</li>
+          <li>OS version (e.g., Windows 11 Rev 2)</li>
+          <li>Battery level of HMD and controllers</li>
+          <li>Date/time when app was launched</li>
+          <li>Framerate over time</li>
+          <li>Dropped frames over time</li>
+          <li>Performance data (e.g., GPU time per frame, memory usage)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Spatial Data -->
+    <section id="spatial-data">
+      <div class="spec-block">
+        <h4>&#9633; Spatial Data</h4>
+        <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:12px;">Covers HMD and controller movement in XR space and the XR space itself.</p>
+        <ul>
+          <li>Positions of events in XR space</li>
+          <li>Position and rotation of HMD in XR space (can infer height)</li>
+          <li>Position and rotation of controllers in XR space (can infer arm length)</li>
+          <li>Position and rotation of additional tracking devices (e.g., Vive Trackers)</li>
+          <li>Room size (to rectangular area and 10 cm accuracy)</li>
+          <li>Direction of gaze (including eye direction if hardware is available) at a fixed interval</li>
+          <li>Surface sizes and positions detected in AR</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Location Data -->
+    <section id="location-data">
+      <div class="spec-block">
+        <h4>&#9679; Location Data</h4>
+        <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:12px;">Covers location data primarily for outdoor augmented reality experiences.</p>
+        <ul>
+          <li>Latitude, longitude, and elevation</li>
+          <li>Compass direction</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Social Data -->
+    <section id="social-data">
+      <div class="spec-block">
+        <h4>&#9673; Social Data</h4>
+        <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:12px;">Covers non-identifiable multiplayer gameplay and social engagements.</p>
+        <p class="restriction">Never record: real names or usernames of the user or their friends.</p>
+        <ul>
+          <li>Number of friends in room/group/app</li>
+          <li>User's organization-scoped ID</li>
+          <li>Number of friends on the friends list</li>
+          <li>Number of friends in the room</li>
+          <li>Number of recently met users</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Biometric Data -->
+    <section id="biometric-data">
+      <div class="spec-block">
+        <h4>&#9829; Biometric Data</h4>
+        <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:12px;">Covers sensors that record biometric data.</p>
+        <p class="restriction">Never record: images of the user's eyes.</p>
+        <ul>
+          <li>Fixations and saccades using eye tracking hardware</li>
+          <li>Cognitive load (from HP Omnicept)</li>
+          <li>Heart rate</li>
+          <li>Heart rate variance</li>
+          <li>Electromyography (EMG)</li>
+          <li>Electroencephalography (EEG)</li>
+          <li>Electrocardiogram (ECG/EKG)</li>
+          <li>Galvanic Skin Response (GSR)</li>
+          <li>High fidelity motion tracking (e.g., Teslasuit)</li>
+        </ul>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- Implementation -->
+    <section id="implementation">
+      <h2>Implementing the Framework</h2>
+      <p>Reference implementations are available for <a href="https://github.com/CognitiveVR/xrprivacyframework-unity" target="_blank" rel="noopener">Unity</a> and <a href="https://github.com/CognitiveVR/xrprivacyframework-unreal" target="_blank" rel="noopener">Unreal Engine</a>.</p>
+
+      <div class="impl-showcase">
+        <div class="impl-screenshot">
+          <img src="assets/UnityXRPFAgreement.png" alt="XR Privacy Agreement dialog in the Unity SDK — showing toggle switches for Hardware Data, Spatial Data, Location Data, Social Data, Audio Data, and Biometric Data" loading="lazy">
+        </div>
+        <div class="impl-details">
+          <h3 style="margin-top:0;">Guidelines</h3>
+          <ul>
+            <li>Provide non-technical descriptions of features for participants</li>
+            <li>Customize the description of biometric data sources (if used)</li>
+            <li>Do not disable app features if certain data sources are not selected&mdash;only disable the recording of that data</li>
+            <li>Display the agreement before data is recorded</li>
+            <li>Allow a user to change their agreement from a reasonably accessible menu option</li>
+            <li>Include a link to your privacy policy for further information</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Allowances -->
+    <section id="allowances">
+      <h3>Allowances</h3>
+      <ul>
+        <li>The agreement may be waived if you receive informed consent by another method, such as written consent in an academic study or via an employment agreement. Consider including a popup in XR informing your user that data is being recorded regardless.</li>
+        <li>Customize UI visuals and controls for your application</li>
+        <li>Remove data source agreements for invalid options (e.g., the Meta Quest doesn't include biometric sensors, so that option doesn't need to be displayed)</li>
+        <li>You may <strong>require</strong> the user to agree with the hardware data source to continue using your app. This should not include any personally identifying information.</li>
+        <li>You may save the agreement for a participant&mdash;it does not need to be accepted each session</li>
+      </ul>
+    </section>
+
+    <!-- Supporting -->
+    <section id="supporting">
+      <h2>Supporting the Framework</h2>
+      <p>When a participant is presented with the agreement, their choice should set certain flags in the application. Recording data should respect the flags set by the user's choices.</p>
+      <p><strong>Tool Developers</strong> (such as analytics, advertisement, or machine learning companies) should build their SDKs to enable or disable collection of data respecting these flags.</p>
+      <p><strong>App Developers</strong> should verify that the tools they are using correctly implement this standard.</p>
+    </section>
+
+    <hr>
+
+    <!-- Adopters -->
+    <section id="adopters">
+      <h2>Supporters &amp; Adopters</h2>
+
+      <div class="adopter-card">
+        <div class="adopter-logo">
+          <img src="assets/c3d-icon.jpg" alt="Cognitive3D logo">
+        </div>
+        <div class="adopter-info">
+          <h4><a href="https://cognitive3d.com" target="_blank" rel="noopener">Cognitive3D</a></h4>
+          <p><a href="https://cognitive3d.com" target="_blank" rel="noopener">Cognitive3D</a> is a supporter and adopter of the XR Privacy Framework. Their spatial analytics platform&mdash;spanning SDKs for Unity, Unreal, visionOS, WebXR, Android XR, and C++&mdash;implements the XRPF consent standard, enabling developers to instrument XR experiences while giving participants transparent control over which data sources are recorded.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contribute -->
+    <section id="contribute">
+      <h2>Contribute</h2>
+      <p>XRPF is an open standard released under the <a href="#license">MIT License</a>. Contributions are welcome:</p>
+      <ul>
+        <li>Proposals for including additional hardware and software</li>
+        <li>CC0 iconography</li>
+        <li>Typos or edits for clarity (grammar, descriptions, use cases)</li>
+      </ul>
+      <p>Open an issue or submit a pull request on <a href="https://github.com/CognitiveVR/xrprivacyframework" target="_blank" rel="noopener">GitHub</a>.</p>
+    </section>
+
+    <!-- License -->
+    <section id="license">
+      <h2>License</h2>
+      <p>The XR Privacy Framework is released under the <strong>MIT License</strong>. Copyright &copy; 2026 Cognitive3D.</p>
+      <p>See the full <a href="https://github.com/CognitiveVR/xrprivacyframework/blob/main/LICENSE" target="_blank" rel="noopener">LICENSE</a> file on GitHub.</p>
+    </section>
+
+  </main>
+</div>
+
+<!-- ════════════ Footer ════════════ -->
+<footer>
+  <p>XR Privacy Framework &mdash; <a href="https://github.com/CognitiveVR/xrprivacyframework" target="_blank" rel="noopener">GitHub</a> &middot; <a href="https://github.com/CognitiveVR/xrprivacyframework/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a> &middot; &copy; 2026 Cognitive3D</p>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  document.getElementById('navToggle').addEventListener('click', function() {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  // Close mobile nav on link click
+  document.querySelectorAll('#navLinks a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      document.getElementById('navLinks').classList.remove('open');
+    });
+  });
+
+  // Sidebar active state
+  (function() {
+    var links = document.querySelectorAll('.sidebar a');
+    var sections = [];
+    links.forEach(function(link) {
+      var id = link.getAttribute('href').slice(1);
+      var el = document.getElementById(id);
+      if (el) sections.push({ id: id, el: el, link: link });
+    });
+
+    function update() {
+      var scrollY = window.scrollY + 120;
+      var current = '';
+      sections.forEach(function(s) {
+        if (s.el.offsetTop <= scrollY) current = s.id;
+      });
+      links.forEach(function(l) { l.classList.remove('active'); });
+      sections.forEach(function(s) {
+        if (s.id === current) s.link.classList.add('active');
+      });
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+</script>
+
+</body>
+</html>
