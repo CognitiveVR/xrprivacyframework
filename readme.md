@@ -19,13 +19,15 @@ The XR Privacy Framework (or "XRPF") is for **App Developers** to give their par
 
 XRPF is not a privacy policy and is not legally binding - it is a framework to inform participants about data the app is recording. An App Developer and Tools Developer should have a privacy policy to specify how data is collected and used in greater detail available in their application and/or website, and disclose any applicable subprocessors. 
 
-XRPF is an framework that defines consent between the App Developer and the participant about the types of data being recorded, falling into 5 categories:
+XRPF is an framework that defines consent between the App Developer and the participant about the types of data being recorded, falling into 7 categories:
 
 - Hardware Data
 - Spatial Data
+- Room Capture Data
 - Location Data
 - Biometric Data
 - Social Data
+- Audio Data
 
 What can the App Developer do with the data after recorded?
 
@@ -42,8 +44,10 @@ Many data sources are outside the available permissions agreement popups on Andr
 
 - Location data - app will already ask for permission
 - Social data - app will already ask for permission
+- Audio data - app will already ask for permission (microphone)
 - Hardware data - not asked for permission
 - Spatial data - not asked for permission
+- Room capture data - not asked for permission (depends on the device)
 - Biometric data - not asked for permission (depends on the device)
 
 Additionally, we believe participants should be able to have feature rich XR experiences (powered by these data sources) without compromising their privacy. Correct implementation of this privacy framework separates data used by the app to deliver these experiences and data available to the developer.
@@ -112,6 +116,16 @@ This covers HMD and controller movement in VR space and the VR space itself
 - Direction of gaze (including eye direction if hardware is available) at a fixed interval
 - Surface sizes and positions detected in AR
 
+## Room Capture Data
+
+This covers the layout of the participant's physical room captured through scene understanding
+
+- **NO PASS THROUGH CAMERA IMAGES OF THE ROOM**
+- Detected surfaces such as walls, floor and ceiling (position, rotation and size)
+- Detected furniture and objects such as table, couch or storage (position, rotation and size)
+- Door and window frames detected in the room
+- Labels describing each detected surface or object
+
 ## Location Data
 
 This covers location data primarily for outdoor augmented reality experiences
@@ -129,6 +143,15 @@ This covers non-identifiable multiplayer gameplay and social engagements
 - Number of friends on the friends list
 - Number of friends in the room
 - Number of recently met users
+
+## Audio Data
+
+This covers audio recorded during the experience
+
+- **DO NOT RECORD AUDIO WITHOUT CLEARLY INDICATING TO THE PARTICIPANT THAT RECORDING IS ACTIVE**
+- Participant microphone input
+- In-app/application audio
+- Spoken interactions with in-app voice or AI agents
 
 ## Biometric Data
 
