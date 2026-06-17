@@ -6,8 +6,8 @@
 
   <!-- Primary Meta Tags -->
   <title>XR Privacy Framework — Open-Source Consent Specification for VR, AR &amp; MR Data</title>
-  <meta name="description" content="The XR Privacy Framework (XRPF) is an open-source, MIT-licensed specification that gives participants in virtual reality, augmented reality, and mixed reality experiences transparent control over what data is recorded — covering hardware, spatial, location, social, and biometric data sources.">
-  <meta name="keywords" content="XR privacy, VR privacy, AR privacy, mixed reality privacy, XR data consent, XRPF, privacy framework, spatial data, biometric data, eye tracking privacy, VR data protection, XR consent specification, open source privacy, immersive technology privacy">
+  <meta name="description" content="The XR Privacy Framework (XRPF) is an open-source, MIT-licensed specification that gives participants in virtual reality, augmented reality, and mixed reality experiences transparent control over what data is recorded — covering hardware, spatial, room capture, location, social, audio, and biometric data sources.">
+  <meta name="keywords" content="XR privacy, VR privacy, AR privacy, mixed reality privacy, XR data consent, XRPF, privacy framework, spatial data, biometric data, eye tracking privacy, VR data protection, XR consent specification, open source privacy, immersive technology privacy, audio data privacy, room capture privacy">
   <meta name="author" content="Cognitive3D">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://xrprivacyframework.org">
@@ -16,7 +16,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://xrprivacyframework.org">
   <meta property="og:title" content="XR Privacy Framework — Open-Source Consent Specification for XR Data">
-  <meta property="og:description" content="An open-source, MIT-licensed consent specification that gives VR, AR, and MR participants control over their data and privacy. Defines five data source categories: hardware, spatial, location, social, and biometric.">
+  <meta property="og:description" content="An open-source, MIT-licensed consent specification that gives VR, AR, and MR participants control over their data and privacy. Defines seven data source categories: hardware, spatial, room capture, location, social, audio, and biometric.">
   <meta property="og:image" content="https://xrprivacyframework.org/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -47,7 +47,7 @@
     "about": {
       "@type": "TechArticle",
       "name": "XR Privacy Framework Specification",
-      "description": "A consent specification defining five data source categories for XR applications: hardware data, spatial data, location data, social data, and biometric data.",
+      "description": "A consent specification defining seven data source categories for XR applications: hardware data, spatial data, room capture data, location data, social data, audio data, and biometric data.",
       "license": "https://opensource.org/licenses/MIT",
       "author": {
         "@type": "Organization",
@@ -411,8 +411,10 @@
 
     .icon-hardware .data-card-icon { background: rgba(139, 92, 246, 0.15); }
     .icon-spatial .data-card-icon { background: rgba(52, 211, 153, 0.12); }
+    .icon-room .data-card-icon { background: rgba(96, 165, 250, 0.14); }
     .icon-location .data-card-icon { background: rgba(240, 183, 74, 0.12); }
     .icon-social .data-card-icon { background: rgba(167, 139, 250, 0.15); }
+    .icon-audio .data-card-icon { background: rgba(34, 211, 238, 0.12); }
     .icon-biometric .data-card-icon { background: rgba(240, 113, 120, 0.12); }
 
     /* ── Spec detail blocks ── */
@@ -602,8 +604,10 @@
     <a href="#data-sources">Data Sources</a>
     <a href="#hardware-data">Hardware Data</a>
     <a href="#spatial-data">Spatial Data</a>
+    <a href="#room-capture-data">Room Capture Data</a>
     <a href="#location-data">Location Data</a>
     <a href="#social-data">Social Data</a>
+    <a href="#audio-data">Audio Data</a>
     <a href="#biometric-data">Biometric Data</a>
     <a href="#implementation">Implementation</a>
     <a href="#allowances">Allowances</a>
@@ -623,7 +627,7 @@
       <div class="callout">
         <p>XRPF is <strong>not</strong> a privacy policy and is not legally binding. It is a specification for informed consent about the types of data an XR app records. App Developers and Tool Developers should maintain separate privacy policies that specify how data is collected and used, and disclose any applicable subprocessors.</p>
       </div>
-      <p>XRPF defines consent between the App Developer and the participant about data being recorded, organized into five categories: Hardware Data, Spatial Data, Location Data, Social Data, and Biometric Data.</p>
+      <p>XRPF defines consent between the App Developer and the participant about data being recorded, organized into seven categories: Hardware Data, Spatial Data, Room Capture Data, Location Data, Social Data, Audio Data, and Biometric Data.</p>
       <p>What can an App Developer do with data after it is recorded? The developer is free to use data as they see fit&mdash;for research, training, app optimization, monetization, and so on. These uses should be indicated in their privacy policy.</p>
       <p>As XRPF is a specification beyond the scope of a single piece of software, implementations will evolve as technology changes. This specification will be updated with the following goals:</p>
       <ul>
@@ -639,8 +643,10 @@
       <ul>
         <li><strong>Location Data</strong> &mdash; apps already ask for permission</li>
         <li><strong>Social Data</strong> &mdash; apps already ask for permission</li>
+        <li><strong>Audio Data</strong> &mdash; apps already ask for permission (microphone)</li>
         <li><strong>Hardware Data</strong> &mdash; not asked for permission</li>
         <li><strong>Spatial Data</strong> &mdash; not asked for permission</li>
+        <li><strong>Room Capture Data</strong> &mdash; not asked for permission (depends on device)</li>
         <li><strong>Biometric Data</strong> &mdash; not asked for permission (depends on device)</li>
       </ul>
       <p>Participants should be able to have feature-rich XR experiences&mdash;powered by these data sources&mdash;without compromising their privacy. Correct implementation of XRPF separates data used by the app to deliver experiences from data available to the developer for analysis.</p>
@@ -656,7 +662,7 @@
     <!-- Data Sources -->
     <section id="data-sources">
       <h2>Data Sources</h2>
-      <p>XRPF organizes potentially sensitive data into five categories. Each describes the types of data available to the app that should be disclosed to the user when collected, along with restrictions on data that should never be recorded.</p>
+      <p>XRPF organizes potentially sensitive data into seven categories. Each describes the types of data available to the app that should be disclosed to the user when collected, along with restrictions on data that should never be recorded.</p>
 
       <div class="data-source-grid">
         <a href="#hardware-data" class="data-card icon-hardware" style="text-decoration:none;color:inherit;">
@@ -669,6 +675,11 @@
           <h4>Spatial Data</h4>
           <p>HMD &amp; controller position, room size, gaze direction, and surface detection.</p>
         </a>
+        <a href="#room-capture-data" class="data-card icon-room" style="text-decoration:none;color:inherit;">
+          <div class="data-card-icon">&#8962;</div>
+          <h4>Room Capture Data</h4>
+          <p>Walls, floor, ceiling, and furniture of the participant's physical room.</p>
+        </a>
         <a href="#location-data" class="data-card icon-location" style="text-decoration:none;color:inherit;">
           <div class="data-card-icon">&#9679;</div>
           <h4>Location Data</h4>
@@ -678,6 +689,11 @@
           <div class="data-card-icon">&#9673;</div>
           <h4>Social Data</h4>
           <p>Non-identifiable multiplayer and social engagement metadata.</p>
+        </a>
+        <a href="#audio-data" class="data-card icon-audio" style="text-decoration:none;color:inherit;">
+          <div class="data-card-icon">&#9834;</div>
+          <h4>Audio Data</h4>
+          <p>Microphone input, in-app audio, and spoken interactions.</p>
         </a>
         <a href="#biometric-data" class="data-card icon-biometric" style="text-decoration:none;color:inherit;">
           <div class="data-card-icon">&#9829;</div>
@@ -726,6 +742,21 @@
       </div>
     </section>
 
+    <!-- Room Capture Data -->
+    <section id="room-capture-data">
+      <div class="spec-block">
+        <h4>&#8962; Room Capture Data</h4>
+        <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:12px;">Covers the layout of the participant's physical room captured through scene understanding.</p>
+        <p class="restriction">Never record: pass-through camera images of the room.</p>
+        <ul>
+          <li>Detected surfaces such as walls, floor, and ceiling &mdash; with position, rotation, and size</li>
+          <li>Detected furniture and objects (e.g., table, couch, storage) &mdash; with position, rotation, and size</li>
+          <li>Door and window frames detected in the room</li>
+          <li>Labels describing each detected surface or object</li>
+        </ul>
+      </div>
+    </section>
+
     <!-- Location Data -->
     <section id="location-data">
       <div class="spec-block">
@@ -750,6 +781,20 @@
           <li>Number of friends on the friends list</li>
           <li>Number of friends in the room</li>
           <li>Number of recently met users</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Audio Data -->
+    <section id="audio-data">
+      <div class="spec-block">
+        <h4>&#9834; Audio Data</h4>
+        <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:12px;">Covers audio recorded during the experience.</p>
+        <p class="restriction">Never record: audio without clearly indicating to the participant that recording is active.</p>
+        <ul>
+          <li>Participant microphone input</li>
+          <li>In-app/application audio</li>
+          <li>Spoken interactions with in-app voice or AI agents</li>
         </ul>
       </div>
     </section>
